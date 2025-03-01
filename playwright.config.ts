@@ -48,9 +48,7 @@ export default defineConfig({
   projects: [
     {
       name: 'api',
-      use: { 
-        ...devices['Desktop Chrome'], 
-        channel: 'chrome',
+      use: {
         baseURL: process.env.API_BASE_URL
       },
       testDir: './tests/API'
