@@ -1,0 +1,28 @@
+name: "API Automation"
+on:
+  workflow_dispatch:
+jobs:
+  testAPI:
+    name: Run API Test
+    runs-on: ubuntu-latest
+    env:
+      RETRY: 1
+      WORKER: 2
+      HEADLESS: true
+      API_BASE_URL: https://gorest.co.in
+      API_TOKEN: ${{ vars.API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm i
+      - name: Install playwright browsers
+        run: npx playwright install chrome
+      - name: Run tests
+        run: BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} BUILD_NUMBER=${{ github.run_number }} TRIGGERED_BY=${{ github.actor }} SLACK_URL=${{ secrets.SLACK_URL }} npx playwright test --project=api
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

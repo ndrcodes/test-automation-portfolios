@@ -1,0 +1,20 @@
+{
+  "name": "test-automation-portfolios",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.12"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "ajv": "^8.13.0",
+    "dotenv": "^16.4.5",
+    "playwright-slack-report": "github:indraaristya/playwright-slack-report#v1.0.0"
+  }
+}
