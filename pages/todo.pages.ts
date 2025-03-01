@@ -4,33 +4,20 @@ import { waitForElement } from '../helper/web-helper';
 import { setup } from '../helper/setup';
 
 export class TodoPage {
-  readonly page: Page;
-  readonly txtTodoField: Locator;
-  readonly lblTodoTitle: Locator;
-  readonly btnMarkTodo: Locator;
-  readonly btnDeleteSingleTodo: Locator;
+  constructor(
+    public page: Page,
+    public txtTodoField: Locator = page.locator('.new-todo'),
+    public lblTodoTitle: Locator = page.locator('//label[@data-testid="todo-title"]'),
+    public btnMarkTodo: Locator = page.locator('//ul[@class="todo-list"]//input[@type="checkbox"]'),
+    public btnDeleteSingleTodo: Locator = page.locator('//button[@class="destroy"]'),
 
-  readonly txtEditField: Locator;
-  readonly lblCountTodo: Locator;
-  readonly btnTabAll: Locator;
-  readonly btnTabActive: Locator;
-  readonly btnTabCompleted: Locator;
-  readonly btnClearCompletedTodo: Locator;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.txtTodoField = page.locator('.new-todo');
-    this.lblTodoTitle = page.locator('//label[@data-testid="todo-title"]');
-    this.btnMarkTodo = page.locator('//ul[@class="todo-list"]//input[@type="checkbox"]')
-    this.btnDeleteSingleTodo = page.locator('//button[@class="destroy"]');
-
-    this.txtEditField = page.locator('//input[@class="edit"]')
-    this.lblCountTodo = page.locator('//span[@data-testid="todo-count"]');
-    this.btnTabAll = page.locator('//a[text()="All"]');
-    this.btnTabActive = page.locator('//a[text()="Active"]');
-    this.btnTabCompleted = page.locator('//a[text()="Completed"]');
-    this.btnClearCompletedTodo = page.locator('//button[@class="clear-completed"]')
-  }
+    public txtEditField: Locator = page.locator('//input[@class="edit"]'),
+    public lblCountTodo: Locator = page.locator('//span[@data-testid="todo-count"]'),
+    public btnTabAll: Locator = page.locator('//a[text()="All"]'),
+    public btnTabActive: Locator = page.locator('//a[text()="Active"]'),
+    public btnTabCompleted: Locator = page.locator('//a[text()="Completed"]'),
+    public btnClearCompletedTodo: Locator = page.locator('//button[@class="clear-completed"]'),
+  ) {}
 
   async goto() {
     await this.page.goto(setup.baseUrl);
