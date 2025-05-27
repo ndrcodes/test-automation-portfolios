@@ -58,3 +58,10 @@ Running command are the same both for API and WEB, only need to define the proje
 ```
 
 Or remove the `--project` flag to run both of API and WEB at the same time.
+
+## Logging with Grafana Loki
+
+The API test sometimes got flaky due to the API response is inconsistent. To know the root cause or the error of the API response when the test failed, we could add logging feature for every API requests in Playwright. This time I use Loki as the log aggregation to collect the logs and it can be seen in Grafana.
+
+To setup, use Docker to up the Grafana and Loki services that available in `docker-compose.yml` by run `docker compose up -d` in command. It will run the Grafana and Loki container in detached mode. 
+After both container is ready, then the test can be running.
