@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { request, APIRequestContext, APIResponse } from '@playwright/test';
+import { enqueueLog } from './logQueue';
 
 interface LokiLabels {
   [key: string]: string;
@@ -112,9 +113,13 @@ export async function createLoggedApiContext(): Promise<APIRequestContext> {
     } catch {
         responseData['body'] = {}
     }
-    await logApiCallToLoki(reqData, responseData, {
+
+    const logging = logApiCallToLoki(reqData, responseData, {
       environment: process.env.ENV || 'local',
-    })
+    }).catch((e) => {
+        console.warn('Loki failed to log the error:', e.message);
+    });
+    enqueueLog(logging);
     return response;
   };
 
