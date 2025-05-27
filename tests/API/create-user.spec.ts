@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { createUser, validateJsonSchema } from '../../helper/api-helper';
 import { setup } from '../../helper/setup';
+import { createLoggedApiContext } from '../../utils/lokiLogger';
 
 const header = {
   'Authorization': `Bearer ${setup.apiToken}`
@@ -11,9 +12,10 @@ const invalidHeader = {
 }
 
 test.describe('POST new users', async() => {
-  test('TAPI0006,TAPI0007-Success to create new users with valid data and Authorization header', async ({ request }) => {
+  test('TAPI0006,TAPI0007-Success to create new users with valid data and Authorization header', async ({ }) => {
     const body = await createUser('valid');
-    
+
+    const request = await createLoggedApiContext();
     const response = await request.post(`/public/v2/users`, { headers: header, data: body })  
     const responseJson = await response.json()
     expect(response.status()).toBe(201)
@@ -24,27 +26,30 @@ test.describe('POST new users', async() => {
     expect(await validateJsonSchema('user', responseJson))
   });
 
-  test('TAPI0008-Failed to create new users without Authorization header', async ({ request }) => {
+  test('TAPI0008-Failed to create new users without Authorization header', async ({ }) => {
     const body = await createUser('valid');
     
+    const request = await createLoggedApiContext();
     const response = await request.post(`/public/v2/users`, { data: body })  
     const responseJson = await response.json()
     expect(response.status()).toBe(401)
     expect(responseJson['message']).toEqual("Authentication failed")
   });
 
-  test('TAPI0009-Failed to create new users with invalid Authorization header', async ({ request }) => {
+  test('TAPI0009-Failed to create new users with invalid Authorization header', async ({ }) => {
     const body = await createUser('valid');
     
+    const request = await createLoggedApiContext();
     const response = await request.post(`/public/v2/users`, { headers: invalidHeader, data: body })  
     const responseJson = await response.json()
     expect(response.status()).toBe(401)
     expect(responseJson['message']).toEqual("Invalid token")
   });
 
-  test('TAPI0010-Verify new users with exactly same data as existing is failed to be created', async ({ request }) => {
+  test('TAPI0010-Verify new users with exactly same data as existing is failed to be created', async ({ }) => {
     const body = await createUser('valid');
     
+    const request = await createLoggedApiContext();
     const response = await request.post(`/public/v2/users`, { headers: header, data: body })  
     const responseJson = await response.json()
     expect(response.status()).toBe(201)

@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { validateJsonSchema } from '../../helper/api-helper';
 import { setup } from '../../helper/setup';
+import { createLoggedApiContext } from '../../utils/lokiLogger';
 
 test.describe('GET list of users', async() => {
-  test('TAPI0001-Verify the response when GET list of users without Authorization header', async ({ request }) => {
+  test('TAPI0001-Verify the response when GET list of users without Authorization header', async ({ }) => {
+    const request = await createLoggedApiContext();
     const response = await request.get(`/public/v2/users`)
   
     const responseJson = await response.json()
@@ -11,10 +13,11 @@ test.describe('GET list of users', async() => {
     expect(await validateJsonSchema('listUser', responseJson))
   });
 
-  test('TAPI0002-Verify the response when GET list of users with Authorization header', async ({ request }) => {
+  test('TAPI0002-Verify the response when GET list of users with Authorization header', async ({ }) => {
     const header = {
       'Authorization': `Bearer ${setup.apiToken}`
     }
+    const request = await createLoggedApiContext();
     const response = await request.get(`/public/v2/users`, { headers: header })
   
     const responseJson = await response.json()
@@ -22,12 +25,13 @@ test.describe('GET list of users', async() => {
     expect(await validateJsonSchema('listUser', responseJson))
   });
 
-  test('TAPI0003-Verify the response when GET list of users with Authorization header and query parameters status', async ({ request }) => {
+  test('TAPI0003-Verify the response when GET list of users with Authorization header and query parameters status', async ({ }) => {
     const header = {
       'Authorization': `Bearer ${setup.apiToken}`
     }
 
     const status = 'active'
+    const request = await createLoggedApiContext();
     const response = await request.get(`/public/v2/users?status=${status}`, { headers: header })
   
     const responseJson = await response.json()
@@ -37,12 +41,13 @@ test.describe('GET list of users', async() => {
     expect(userStatuses).toEqual(expect.arrayContaining([status]));
   });
 
-  test('TAPI0003-Verify the response when GET list of users with Authorization header and query parameters gender', async ({ request }) => {
+  test('TAPI0003-Verify the response when GET list of users with Authorization header and query parameters gender', async ({ }) => {
     const header = {
       'Authorization': `Bearer ${setup.apiToken}`
     }
 
     const gender = 'male'
+    const request = await createLoggedApiContext();
     const response = await request.get(`/public/v2/users?gender=${gender}`, { headers: header })
   
     const responseJson = await response.json()
